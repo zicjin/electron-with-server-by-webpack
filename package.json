@@ -101,6 +101,7 @@
     "dayjs": "^1.9.8",
     "dotenv": "^8.2.0",
     "easy-peasy": "^4.0.1",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "^3.1.1",

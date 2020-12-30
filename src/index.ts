@@ -1,4 +1,8 @@
 import { app, BrowserWindow } from 'electron'
+import { fork } from 'child_process'
+import findOpenSocket from './utils/find-open-socket'
+import isDev from 'electron-is-dev'
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -7,18 +11,28 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
-const createWindow = (): void => {
+const createWindow = (socketName: string): void => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const clientWin = new BrowserWindow({
     height: 600,
     width: 800,
+    webPreferences: {
+      nodeIntegration: false,
+      preload: __dirname + '/client-preload.js',
+    },
   })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  clientWin.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  clientWin.webContents.openDevTools()
+
+  clientWin.webContents.on('did-finish-load', () => {
+    clientWin.webContents.send('set-socket', {
+      name: socketName,
+    })
+  })
 }
 
 // This method will be called when Electron has finished
