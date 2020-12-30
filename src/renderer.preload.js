@@ -1,9 +1,8 @@
 const { ipcRenderer } = require('electron')
-const isDev = require('electron-is-dev')
 const ipc = require('node-ipc')
 const uuid = require('uuid')
 
-window.IS_DEV = isDev
+window.isProd = process.env.NODE_ENV === 'production'
 
 let resolveSocketPromise
 window.getServerSocket = () => {

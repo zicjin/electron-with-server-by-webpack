@@ -1,16 +1,27 @@
 const rules = require('./webpack.rules')
 
+const isProd = process.env.NODE_ENV === 'production'
+const isDebugProd = process.env.DEBUG_PROD === 'true'
+
 module.exports = {
-  /**
-   * This is the main entry point for your application, it's the first file
-   * that runs in the main process.
-   */
-  entry: './src/index.ts',
-  // Put your normal webpack config below here
+  // mode: isProd? 'production': 'development',
+  // devtool: isProd ? (isDebugProd ? 'source-map' : false) : 'cheap-module-source-map', // from cra-ejected
+  
+  entry: {
+    index: './src/main.ts',
+    server: './src/server.js',
+    rendererPreload: './src/renderer.preload.js',
+  },
+
+  output: {
+    filename: '[name].js',
+  },
+
   module: {
     rules,
   },
+
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
+    extensions: ['.js', '.ts', '.json']
   },
-};
+}

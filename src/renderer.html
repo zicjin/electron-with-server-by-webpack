@@ -3,14 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Derealize</title>
-    <script src="client-ipc.js"></script>
-    <script src="client-app.js"></script>
   </head>
   <body>
     <div id="root"></div>
 
     <script>
-      if (!window.IS_DEV) {
+      if (window.isProd) {
         var tag = document.createElement('meta')
         tag.setAttribute('http-equiv', 'Content-Security-Policy')
         tag.setAttribute('content', "default-src 'self'; style-src 'self' 'unsafe-inline';")

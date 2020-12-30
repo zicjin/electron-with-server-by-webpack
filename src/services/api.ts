@@ -3,7 +3,7 @@ import { errorHander, ToastCaller } from '../utils/toast'
 
 const api = ky.extend({
   timeout: 8000,
-  prefixUrl: process.env.REACT_APP_HOST,
+  // prefixUrl: process.env.REACT_APP_HOST,
 })
 
 interface LoggedData {
