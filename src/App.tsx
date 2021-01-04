@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import "dayjs/locale/zh-cn"
 import relativeTime from "dayjs/plugin/relativeTime"
 import utc from "dayjs/plugin/utc"
-// import Home from "./Home"
+import Test from "./components/Test"
 import Login from "./components/Login"
 import mytheme from "./theme"
 import { PrivateRoute } from "./utils/PrivateRoute"
@@ -22,6 +22,7 @@ const App = (): JSX.Element => {
         <MemoryRouter>
           <Switch>
             {/* <PrivateRoute path="/" exact component={Home} /> */}
+            <Route path="/" exact component={Test} />
             <Route path="/login" exact component={Login} />
           </Switch>
         </MemoryRouter>

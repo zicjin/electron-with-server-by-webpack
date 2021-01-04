@@ -14,8 +14,8 @@ let socketClient = null
 
 // Functions
 function connectSocket(name) {
-  window.ipcConnect(name, function(client) {
-    client.on('message', data => {
+  window.ipcConnect(name, function (client) {
+    client.on('message', (data) => {
       const msg = JSON.parse(data)
 
       if (msg.type === 'error') {
@@ -35,7 +35,7 @@ function connectSocket(name) {
 
         const listens = listeners.get(name)
         if (listens) {
-          listens.forEach(listener => {
+          listens.forEach((listener) => {
             listener(args)
           })
         }
@@ -49,7 +49,7 @@ function connectSocket(name) {
 
       // Send any messages that were queued while closed
       if (messageQueue.length > 0) {
-        messageQueue.forEach(msg => client.emit('message', msg))
+        messageQueue.forEach((msg) => client.emit('message', msg))
         messageQueue = []
       }
 
@@ -82,7 +82,10 @@ export function listen(name, cb) {
 
   return () => {
     let arr = listeners.get(name)
-    listeners.set(name, arr.filter(cb_ => cb_ !== cb))
+    listeners.set(
+      name,
+      arr.filter((cb_) => cb_ !== cb),
+    )
   }
 }
 

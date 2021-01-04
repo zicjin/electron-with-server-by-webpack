@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const rules = require('./webpack.rules')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -9,13 +10,22 @@ module.exports = {
   
   entry: {
     index: './src/main.ts',
-    server: './src/server.js',
-    rendererPreload: './src/renderer.preload.js',
+    renderer_preload: './src/renderer-preload.js',
+    backend: './src/backend/backend.js',
+    handlers: './src/backend/handlers.js',
+    ipc: './src/backend/ipc.js',
   },
 
   output: {
     filename: '[name].js',
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/backend/backend-dev.html",
+      filename: "backend-dev.html",
+    }),
+  ],
 
   module: {
     rules,

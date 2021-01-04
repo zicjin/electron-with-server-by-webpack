@@ -1,5 +1,5 @@
-let serverHandlers = require('./server-handlers')
-let ipc = require('./server.ipc')
+let serverHandlers = require('./handlers')
+let ipc = require('./ipc')
 
 let isDev, version
 

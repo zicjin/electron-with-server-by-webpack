@@ -2,6 +2,10 @@ import { app, BrowserWindow } from 'electron'
 import { fork, ChildProcess } from 'child_process'
 import findOpenSocket from './utils/find-open-socket'
 
+if (!app) {
+  throw new Error('unready!')
+}
+
 const isProd = process.env.NODE_ENV === 'production'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -11,7 +15,7 @@ if (require('electron-squirrel-startup')) {
 }
 
 declare const APP_WEBPACK_ENTRY: any
-let serverProcess: ChildProcess
+let backendProcess: ChildProcess
 
 const createRendererWindow = (socketName: string): void => {
   // Create the browser window.
@@ -20,13 +24,13 @@ const createRendererWindow = (socketName: string): void => {
     width: 800,
     webPreferences: {
       nodeIntegration: false,
-      preload: __dirname + '/rendererPreload.js',
+      preload: __dirname + '/renderer_preload.js',
     },
   })
 
   // and load the index.html of the app.
   rendererWin.loadURL(APP_WEBPACK_ENTRY)
-  
+
   // Open the DevTools.
   if (!isProd) {
     rendererWin.webContents.openDevTools()
@@ -37,32 +41,29 @@ const createRendererWindow = (socketName: string): void => {
   })
 }
 
-function createServerWindow(socketName: string) {
-  const serverWin = new BrowserWindow({
+function createBackendWindow(socketName: string) {
+  const backendWin = new BrowserWindow({
     x: 500,
     y: 300,
     width: 700,
     height: 500,
     show: true,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
   })
-  serverWin.loadURL(`file://${__dirname}/server.html`)
+  backendWin.loadURL(`file://${__dirname}/backend-dev.html`)
 
-  serverWin.webContents.on('did-finish-load', () => {
-    serverWin.webContents.send('set-socket', { name: socketName })
+  backendWin.webContents.on('did-finish-load', () => {
+    backendWin.webContents.send('set-socket', { name: socketName })
   })
 }
 
-function createServerProcess(socketName: string) {
-  serverProcess = fork(__dirname + '/server.js', [
-    '--subprocess',
-    app.getVersion(),
-    socketName
-  ])
+function createBackendProcess(socketName: string) {
+  backendProcess = fork(__dirname + '/backend.js', ['--subprocess', app.getVersion(), socketName])
 
-  serverProcess.on('message', msg => {
+  backendProcess.on('message', (msg) => {
     console.log(msg)
   })
 }
@@ -73,16 +74,16 @@ app.on('ready', async () => {
   createRendererWindow(serverSocket)
 
   if (isProd) {
-    createServerProcess(serverSocket)
+    createBackendProcess(serverSocket)
   } else {
-    createServerWindow(serverSocket)
+    createBackendWindow(serverSocket)
   }
 })
 
 app.on('before-quit', () => {
-  if (serverProcess) {
-    serverProcess.kill()
-    serverProcess = null
+  if (backendProcess) {
+    backendProcess.kill()
+    backendProcess = null
   }
 })
 

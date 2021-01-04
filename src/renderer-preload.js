@@ -5,10 +5,12 @@ const uuid = require('uuid')
 window.isProd = process.env.NODE_ENV === 'production'
 
 let resolveSocketPromise
+let socketPromise = new Promise(resolve => {
+  resolveSocketPromise = resolve
+})
+
 window.getServerSocket = () => {
-  return new Promise(resolve => {
-    resolveSocketPromise = resolve
-  })
+  return socketPromise
 }
 
 ipcRenderer.on('set-socket', (event, { name }) => {
