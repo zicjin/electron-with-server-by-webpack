@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const rules = require('./webpack.rules')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.ELECTRON_ENV === 'production'
 const isDebugProd = process.env.DEBUG_PROD === 'true'
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     index: './src/main.ts',
     renderer_preload: './src/renderer-preload.js',
     backend: './src/backend/backend.js',
-    handlers: './src/backend/handlers.js',
+    handlers: './src/backend/handlers.ts',
     ipc: './src/backend/ipc.js',
   },
 

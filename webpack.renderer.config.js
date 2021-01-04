@@ -1,7 +1,8 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rules = require('./webpack.rules')
 const plugins = require('./webpack.plugins')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.ELECTRON_ENV === 'production'
 const isDebugProd = process.env.DEBUG_PROD === 'true'
 
 rules.push({

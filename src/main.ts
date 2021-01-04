@@ -6,7 +6,7 @@ if (!app) {
   throw new Error('unready!')
 }
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.ELECTRON_ENV === 'production'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -69,6 +69,7 @@ function createBackendProcess(socketName: string) {
 }
 
 app.on('ready', async () => {
+  console.log('ready!')
   const serverSocket = await findOpenSocket()
 
   createRendererWindow(serverSocket)
