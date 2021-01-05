@@ -28,9 +28,9 @@ declare const APP_WEBPACK_ENTRY: any
 let backendProcess: ChildProcess
 
 const createRendererWindow = async (socketName: string): Promise<void> => {
-  if (!isProd || isDebugProd) {
-    await installExtensions()
-  }
+  // if (!isProd || isDebugProd) {
+  //   await installExtensions()
+  // } // wait: install fail
 
   // Create the browser window.
   const rendererWin = new BrowserWindow({
@@ -55,6 +55,8 @@ const createRendererWindow = async (socketName: string): Promise<void> => {
 
 function createBackendWindow(socketName: string) {
   const backendWin = new BrowserWindow({
+    x: 400,
+    y: 400,
     width: 1000,
     height: 800,
     show: true,
