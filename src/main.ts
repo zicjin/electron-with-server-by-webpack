@@ -2,6 +2,10 @@ import { app, BrowserWindow } from 'electron'
 import { fork, ChildProcess } from 'child_process'
 import findOpenSocket from './utils/find-open-socket'
 
+if (!app) {
+  throw new Error('app undefine!')
+}
+
 const isProd = process.env.ELECTRON_ENV === 'production'
 const isDebugProd = process.env.DEBUG_PROD === 'true'
 
