@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState, ChangeEvent } from "react"
 import { useLocation, Redirect } from "react-router-dom"
-import { useToast, FormControl, FormLabel, Input, FormHelperText, Container, Button } from "@chakra-ui/react"
-import { BeatLoader } from "react-spinners"
 import { send } from "../renderer-ipc"
 
 const Test = (): JSX.Element => {
