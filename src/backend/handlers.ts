@@ -1,10 +1,6 @@
 import store from './store'
 
-const _history = []
-
 export const factorial = async ({ num }: Record<string, number>) => {
-  _history.push(num)
-
   function fact(n: number): number {
     if (n === 1) {
       return 1
@@ -26,6 +22,5 @@ export const getStore = async (key: string) => {
 }
 
 export const setStore = async (payload: Record<string, string>) => {
-  _history.push(payload)
   store.set(payload)
 }

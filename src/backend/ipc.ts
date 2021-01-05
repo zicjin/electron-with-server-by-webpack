@@ -1,6 +1,7 @@
-const ipc = require('node-ipc')
+import ipc from 'node-ipc'
+import * as handlers from './handlers'
 
-function init(socketName, handlers) {
+export const init = (socketName: string) => {
   ipc.config.id = socketName
   ipc.config.silent = true
 
@@ -9,16 +10,16 @@ function init(socketName, handlers) {
       let msg = JSON.parse(data)
       let { id, name, args } = msg
 
-      if (handlers[name]) {
-        handlers[name](args).then(
-          result => {
+      if ((handlers as any)[name]) {
+        (handlers as any)[name](args).then(
+          (result: any) => {
             ipc.server.emit(
               socket,
               'message',
               JSON.stringify({ type: 'reply', id, result })
             )
           },
-          error => {
+          (error: Error) => {
             // Up to you how to handle errors, if you want to forward
             // them, etc
             ipc.server.emit(
@@ -43,8 +44,6 @@ function init(socketName, handlers) {
   ipc.server.start()
 }
 
-function send(name, args) {
-  ipc.server.broadcast('message', JSON.stringify({ type: 'push', name, args }))
+export const send = (name: string, args: Record<string, unknown>) => {
+  ipc.server.emit('message', JSON.stringify({ type: 'push', name, args }))
 }
-
-module.exports = { init, send }

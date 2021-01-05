@@ -11,9 +11,9 @@ module.exports = {
   entry: {
     index: './src/main.ts',
     renderer_preload: './src/renderer-preload.js',
-    backend: './src/backend/backend.js',
+    backend: './src/backend/backend.ts',
     handlers: './src/backend/handlers.ts',
-    ipc: './src/backend/ipc.js',
+    ipc: './src/backend/ipc.ts',
   },
 
   output: {

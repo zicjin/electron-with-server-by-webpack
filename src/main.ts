@@ -34,8 +34,8 @@ const createRendererWindow = async (socketName: string): Promise<void> => {
 
   // Create the browser window.
   const rendererWin = new BrowserWindow({
-    height: 600,
-    width: 800,
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: false,
       preload: __dirname + '/renderer_preload.js',
@@ -55,10 +55,8 @@ const createRendererWindow = async (socketName: string): Promise<void> => {
 
 function createBackendWindow(socketName: string) {
   const backendWin = new BrowserWindow({
-    x: 500,
-    y: 300,
-    width: 700,
-    height: 500,
+    width: 1000,
+    height: 800,
     show: true,
     webPreferences: {
       nodeIntegration: true,
