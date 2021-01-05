@@ -3,6 +3,7 @@ import { fork, ChildProcess } from 'child_process'
 import findOpenSocket from './utils/find-open-socket'
 
 const isProd = process.env.ELECTRON_ENV === 'production'
+const isDebugProd = process.env.DEBUG_PROD === 'true'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -10,10 +11,27 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
+const installExtensions = async () => {
+  const installer = require('electron-devtools-installer')
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+  const extensions = ['REACT_DEVELOPER_TOOLS']
+
+  return installer
+    .default(
+      extensions.map((name) => installer[name]),
+      forceDownload,
+    )
+    .catch(console.log)
+}
+
 declare const APP_WEBPACK_ENTRY: any
 let backendProcess: ChildProcess
 
-const createRendererWindow = (socketName: string): void => {
+const createRendererWindow = async (socketName: string): Promise<void> => {
+  if (!isProd || isDebugProd) {
+    await installExtensions()
+  }
+
   // Create the browser window.
   const rendererWin = new BrowserWindow({
     height: 600,
@@ -24,11 +42,9 @@ const createRendererWindow = (socketName: string): void => {
     },
   })
 
-  // and load the index.html of the app.
   rendererWin.loadURL(APP_WEBPACK_ENTRY)
 
-  // Open the DevTools.
-  if (!isProd) {
+  if (!isProd || isDebugProd) {
     rendererWin.webContents.openDevTools()
   }
 
@@ -50,6 +66,7 @@ function createBackendWindow(socketName: string) {
     },
   })
   backendWin.loadURL(`file://${__dirname}/backend-dev.html`)
+  backendWin.webContents.openDevTools()
 
   backendWin.webContents.on('did-finish-load', () => {
     backendWin.webContents.send('set-socket', { name: socketName })
