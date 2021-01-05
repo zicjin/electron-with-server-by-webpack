@@ -1,12 +1,9 @@
-
 import store from './store'
 
-let handlers: any = {}
+const _history = []
 
-handlers._history = []
-
-handlers['make-factorial'] = async ({ num }: Record<string, number>) => {
-  handlers._history.push(num)
+export const factorial = async ({ num }: Record<string, number>) => {
+  _history.push(num)
 
   function fact(n: number): number {
     if (n === 1) {
@@ -19,19 +16,16 @@ handlers['make-factorial'] = async ({ num }: Record<string, number>) => {
   return fact(num)
 }
 
-handlers['ring-ring'] = async () => {
+export const ring = async () => {
   console.log('picking up the phone')
   return 'hello!'
 }
 
-handlers['getStore'] = async ({ key }: Record<string, string>) => {
-  handlers._history.push(store.get(key))
+export const getStore = async (key: string) => {
   return store.get(key)
 }
 
-handlers['setStore'] = async ({ key, value }: Record<string, string>) => {
-  console.log(key, value)
-  store.set(key, value)
+export const setStore = async (payload: Record<string, string>) => {
+  _history.push(payload)
+  store.set(payload)
 }
-
-module.exports = handlers

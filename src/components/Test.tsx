@@ -12,20 +12,20 @@ const Test = (): JSX.Element => {
 
   return <div>
     <button id="factorial" onClick={async () => {
-        let result = await send('make-factorial', { num: 5 })
+        let result = await send('factorial', { num: 5 })
         setFactorial(result)
     }}>Compute factorial</button>
     <p>factorial: {factorial}</p>
 
     <button id="call" onClick={async () => {
-        let result = await send('ring-ring', { message: 'this is james' })
+        let result = await send('ring', { message: 'this is james' })
         setRing(result)
     }}>Make phone call</button>
     <p>ring: {ring}</p>
 
     <button id="store" onClick={async () => {
-        await send('setStore', { key: 'test', value: 'test1' })
-        let result = await send('getStore', { key: 'test' })
+        await send('setStore', { test: 'test1' })
+        let result = await send('getStore', 'test')
         setTest(result)
     }}>setStore</button>
     <p>test: {test}</p>
