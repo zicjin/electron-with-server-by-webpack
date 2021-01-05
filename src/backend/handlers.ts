@@ -1,6 +1,8 @@
-import store from './store'
+export const history: any[] = []
 
 export const factorial = async ({ num }: Record<string, number>) => {
+  history.push(num)
+
   function fact(n: number): number {
     if (n === 1) {
       return 1
@@ -15,12 +17,4 @@ export const factorial = async ({ num }: Record<string, number>) => {
 export const ring = async () => {
   console.log('picking up the phone')
   return 'hello!'
-}
-
-export const getStore = async (key: string) => {
-  return store.get(key)
-}
-
-export const setStore = async (payload: Record<string, string>) => {
-  store.set(payload)
 }

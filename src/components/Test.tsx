@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState, ChangeEvent } from "react"
 import { useLocation, Redirect } from "react-router-dom"
 import { useToast, FormControl, FormLabel, Input, FormHelperText, Container, Button } from "@chakra-ui/react"
 import { BeatLoader } from "react-spinners"
-import { login } from "../services/api"
 import { send } from "../renderer-ipc"
 
 const Test = (): JSX.Element => {
@@ -22,13 +21,6 @@ const Test = (): JSX.Element => {
         setRing(result)
     }}>Make phone call</button>
     <p>ring: {ring}</p>
-
-    <button id="store" onClick={async () => {
-        await send('setStore', { test: 'test1' })
-        let result = await send('getStore', 'test')
-        setTest(result)
-    }}>setStore</button>
-    <p>test: {test}</p>
   </div>
 }
 

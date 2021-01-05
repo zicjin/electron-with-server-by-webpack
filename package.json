@@ -1,8 +1,7 @@
 {
-  "name": "derealize",
-  "productName": "Derealize",
+  "name": "example",
+  "productName": "Example",
   "version": "1.0.0",
-  "description": "Design interface inside the development",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -26,7 +25,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "derealize"
+            "name": "example"
           }
         },
         {
